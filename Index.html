@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AR GAMING | Sensi Lab V2</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#08090c;
+    --card:#111318;
+    --card2:#181b22;
+    --orange:#ff5a00;
+    --orange2:#ff9500;
+    --white:#f4f5f7;
+    --muted:#9298a6;
+    --border:#292d36;
+    --green:#45e58b;
+    --red:#ff4d4d;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 50% 0,#301708 0,transparent 34%),
+        var(--bg);
+    color:var(--white);
+    font-family:Arial,sans-serif;
+}
+
+button,
+select,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.topbar{
+    height:70px;
+    padding:0 6%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(8,9,12,.96);
+    border-bottom:1px solid var(--border);
+}
+
+.brand{
+    color:var(--orange);
+    font-size:21px;
+    font-weight:900;
+}
+
+.lab{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:2px;
+    margin-left:8px;
+}
+
+.online{
+    color:var(--green);
+    font-size:10px;
+    font-weight:bold;
+}
+
+main{
+    width:min(720px,92%);
+    margin:auto;
+    padding-bottom:60px;
+}
+
+.hero{
+    text-align:center;
+    padding:45px 5px 28px;
+}
+
+.badge{
+    display:inline-block;
+    padding:7px 13px;
+    border:1px solid #713000;
+    border-radius:20px;
+    color:var(--orange);
+    font-size:9px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.hero h1{
+    font-size:clamp(38px,10vw,68px);
+    line-height:.95;
+    margin-top:18px;
+    font-weight:900;
+}
+
+.hero h1 span{
+    color:var(--orange);
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:530px;
+    margin:18px auto 0;
+    line-height:1.6;
+}
+
+/* NAV */
+
+.tabs{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+    margin-bottom:18px;
+}
+
+.tab{
+    padding:12px 5px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--muted);
+    border-radius:10px;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.tab.active{
+    color:white;
+    border-color:var(--orange);
+    background:#21140d;
+}
+
+/* CARDS */
+
+.card{
+    background:linear-gradient(145deg,#15171d,#0e1014);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.card h2{
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* FORM */
+
+label{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1px;
+    margin:17px 0 8px;
+}
+
+select,
+input{
+    width:100%;
+    background:var(--card2);
+    color:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px;
+    outline:none;
+}
+
+select:focus,
+input:focus{
+    border-color:var(--orange);
+}
+
+.generate,
+.primary{
+    width:100%;
+    border:0;
+    border-radius:10px;
+    padding:16px;
+    margin-top:23px;
+    color:white;
+    font-weight:900;
+    background:linear-gradient(90deg,var(--orange),var(--orange2));
+    box-shadow:0 8px 25px rgba(255,90,0,.2);
+}
+
+.secondary{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    border-radius:10px;
+    background:transparent;
+    border:1px solid var(--border);
+    color:white;
+}
+
+.secondary:hover{
+    border-color:var(--orange);
+    color:var(--orange);
+}
+
+/* RESULTS */
+
+.resultHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.small{
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1px;
+}
+
+.resultHead h2{
+    margin-top:5px;
+}
+
+.score{
+    width:68px;
+    height:68px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:#21160f;
+    border:1px solid #61310f;
+    border-radius:14px;
+}
+
+.score strong{
+    color:var(--orange);
+    font-size:23px;
+}
+
+.score span{
+    color:var(--muted);
+    font-size:8px;
+}
+
+.sensiGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.sensi{
+    padding:16px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:12px;
+}
+
+.sensi span{
+    display:block;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1px;
+}
+
+.sensi strong{
+    display:block;
+    margin-top:7px;
+    color:var(--orange);
+    font-size:28px;
+}
+
+.tip{
+    margin-top:15px;
+    padding:16px;
+    border-left:3px solid var(--orange);
+    background:#101217;
+    border-radius:8px;
+    color:var(--muted);
+    line-height:1.5;
+    font-size:12px;
+}
+
+/* TUNER */
+
+.issueGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.issue{
+    padding:14px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:white;
+    text-align:left;
+}
+
+.issue.selected{
+    border-color:var(--orange);
+    background:#24150d;
+}
+
+.issue b{
+    display:block;
+    color:var(--orange);
+    margin-bottom:5px;
+}
+
+.issue small{
+    color:var(--muted);
+}
+
+/* CALIBRATION */
+
+.targetArea{
+    height:300px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:
+        radial-gradient(circle,#252932 1px,transparent 1px);
+    background-size:20px 20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.target{
+    position:absolute;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:5px solid white;
+    background:var(--orange);
+    box-shadow:0 0 30px rgba(255,90,0,.55);
+    transform:translate(-50%,-50%);
+    display:none;
+}
+
+.calStats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:12px;
+}
+
+.stat{
+    text-align:center;
+    padding:12px;
+    background:var(--card2);
+    border-radius:10px;
+}
+
+.stat strong{
+    display:block;
+    color:var(--orange);
+    font-size:20px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:8px;
+}
+
+/* XP */
+
+.levelBox{
+    padding:18px;
+    background:#171a20;
+    border-radius:14px;
+    border:1px solid var(--border);
+}
+
+.levelRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.level{
+    color:var(--orange);
+    font-size:28px;
+    font-weight:900;
+}
+
+.xpText{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.xpBar{
+    height:9px;
+    margin-top:13px;
+    background:#292d36;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.xpFill{
+    width:0;
+    height:100%;
+    background:linear-gradient(90deg,var(--orange),var(--orange2));
+    transition:.4s;
+}
+
+/* PROFILES */
+
+.profile{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:11px;
+    margin-bottom:9px;
+}
+
+.profileInfo b{
+    display:block;
+}
+
+.profileInfo small{
+    color:var(--muted);
+}
+
+.profileActions{
+    display:flex;
+    gap:6px;
+}
+
+.profileActions button{
+    padding:8px;
+    border-radius:7px;
+    border:1px solid var(--border);
+    background:#101217;
+    color:white;
+}
+
+/* CHALLENGE */
+
+.challenge{
+    border:1px solid #63300e;
+    background:linear-gradient(145deg,#21150e,#121318);
+}
+
+.challenge h3{
+    color:var(--orange);
+    margin-bottom:9px;
+}
+
+.challenge p{
+    color:var(--muted);
+    line-height:1.5;
+    font-size:13px;
+}
+
+.reward{
+    margin-top:14px;
+    color:#ffc06b;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translate(-50%,20px);
+    background:#171a20;
+    border:1px solid var(--orange);
+    color:white;
+    padding:12px 17px;
+    border-radius:10px;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    z-index:100;
+    font-size:12px;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+footer{
+    text-align:center;
+    border-top:1px solid var(--border);
+    padding:28px;
+    color:var(--muted);
+    font-size:10px;
+}
+
+footer strong{
+    color:var(--orange);
+}
+
+@media(max-width:450px){
+
+    .topbar{
+        padding:0 5%;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    .tabs{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .sensi strong{
+        font-size:24px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <span class="brand">AR GAMING</span>
+        <span class="lab">SENSI LAB V2</span>
+    </div>
+    <div class="online">● ONLINE</div>
+</header>
+
+<main>
+
+<section class="hero">
+    <div class="badge">FREE FIRE • SMART SENSITIVITY ENGINE</div>
+
+    <h1>
+        BUILD YOUR<br>
+        <span>PERFECT SENSI</span>
+    </h1>
+
+    <p>
+        Generate, test and tune your sensitivity based on
+        your device and your own aim feedback.
+    </p>
+</section>
+
+
+<!-- TABS -->
+
+<div class="tabs">
+    <button class="tab active" onclick="showPage('generator',this)">🎯 SENSI</button>
+    <button class="tab" onclick="showPage('tuner',this)">🧠 TUNER</button>
+    <button class="tab" onclick="showPage('practice',this)">🧪 PRACTICE</button>
+    <button class="tab" onclick="showPage('profile',this)">🏆 PROFILE</button>
+</div>
+
+
+<!-- ================= GENERATOR ================= -->
+
+<section id="generator" class="page active">
+
+<div class="card">
+
+<h2>⚙ PLAYER SETUP</h2>
+
+<label>DEVICE TYPE</label>
+<select id="device">
+    <option value="low">Low-End Device</option>
+    <option value="mid" selected>Mid-Range Device</option>
+    <option value="high">High-End Device</option>
+</select>
+
+<label>PLAYSTYLE</label>
+<select id="style">
+    <option value="drag">Drag Headshot</option>
+    <option value="balanced" selected>Balanced</option>
+    <option value="precise">Precision Aim</option>
+    <option value="rush">Rush / Fast Aim</option>
+</select>
+
+<label>DPI</label>
+<input id="dpi" type="number" value="411" min="100" max="1000">
+
+<label>REFRESH RATE</label>
+<select id="refresh">
+    <option value="60">60 Hz</option>
+    <option value="90">90 Hz</option>
+    <option value="120" selected>120 Hz</option>
+    <option value="144">144 Hz</option>
+</select>
+
+<button class="generate" onclick="generateSensi()">
+    ⚡ GENERATE SENSI
+</button>
+
+</div>
+
+
+<div class="card">
+
+<div class="resultHead">
+    <div>
+        <div class="small">GENERATED PROFILE</div>
+        <h2 id="profileName">BALANCED PROFILE</h2>
+    </div>
+
+    <div class="score">
+        <strong id="score">--</strong>
+        <span>SCORE</span>
+    </div>
+</div>
+
+<div class="sensiGrid">
+
+<div class="sensi">
+    <span>GENERAL</span>
+    <strong id="general">--</strong>
+</div>
+
+<div class="sensi">
+    <span>RED DOT</span>
+    <strong id="redDot">--</strong>
+</div>
+
+<div class="sensi">
+    <span>2X SCOPE</span>
+    <strong id="scope2">--</strong>
+</div>
+
+<div class="sensi">
+    <span>4X SCOPE</span>
+    <strong id="scope4">--</strong>
+</div>
+
+<div class="sensi">
+    <span>SNIPER</span>
+    <strong id="sniper">--</strong>
+</div>
+
+<div class="sensi">
+    <span>FREE LOOK</span>
+    <strong id="freeLook">--</strong>
+</div>
+
+</div>
+
+<div class="tip" id="generatorTip">
+    Generate a setup to begin.
+</div>
+
+<button class="secondary" onclick="copySettings()">
+    📋 COPY SETTINGS
+</button>
+
+<button class="secondary" onclick="saveProfile()">
+    💾 SAVE THIS PROFILE
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= TUNER ================= -->
+
+<section id="tuner" class="page">
+
+<div class="card">
+
+<h2>🧠 SMART SENSI TUNER</h2>
+
+<p style="color:var(--muted);line-height:1.5;font-size:13px;">
+Tell the tuner what happens when you aim. It will recommend
+a small adjustment instead of changing everything.
+</p>
+
+<label>WHAT IS YOUR AIM DOING?</label>
+
+<div class="issueGrid">
+
+<button class="issue" onclick="selectIssue(this,'high')">
+    <b>⬆ TOO HIGH</b>
+    <small>Crosshair goes above target</small>
+</button>
+
+<button class="issue" onclick="selectIssue(this,'low')">
+    <b>⬇ TOO LOW</b>
+    <small>Crosshair doesn't reach target</small>
+</button>
+
+<button class="issue" onclick="selectIssue(this,'fast')">
+    <b>⚡ TOO FAST</b>
+    <small>Aim moves past the target</small>
+</button>
+
+<button class="issue" onclick="selectIssue(this,'slow')">
+    <b>🐢 TOO SLOW</b>
+    <small>Aim feels difficult to move</small>
+</button>
+
+</div>
+
+<button class="primary" onclick="tuneSensi()">
+    🧠 ANALYZE AIM
+</button>
+
+<div class="tip" id="tunerResult">
+    Select an aim problem above.
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🎯 CURRENT SETTINGS</h2>
+
+<div class="sensiGrid">
+
+<div class="sensi">
+<span>GENERAL</span>
+<strong id="tGeneral">--</strong>
+</div>
+
+<div class="sensi">
+<span>RED DOT</span>
+<strong id="tRed">--</strong>
+</div>
+
+<div class="sensi">
+<span>2X</span>
+<strong id="t2">--</strong>
+</div>
+
+<div class="sensi">
+<span>4X</span>
+<strong id="t4">--</strong>
+</div>
+
+</div>
+
+<button class="secondary" onclick="applyTune()">
+    ⚡ APPLY RECOMMENDATION
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= PRACTICE ================= -->
+
+<section id="practice" class="page">
+
+<div class="card">
+
+<h2>🧪 AIM CALIBRATION</h2>
+
+<p style="color:var(--muted);font-size:13px;line-height:1.5;">
+Tap the target as quickly as you can. This is a simple
+reaction practice tool — it does not access Free Fire.
+</p>
+
+<div class="targetArea" id="targetArea">
+    <button class="target" id="target" onclick="hitTarget()">+</button>
+</div>
+
+<button class="primary" id="practiceBtn" onclick="startPractice()">
+    🎯 START CALIBRATION
+</button>
+
+<div class="calStats">
+
+<div class="stat">
+<strong id="hits">0</strong>
+<span>HITS</span>
+</div>
+
+<div class="stat">
+<strong id="misses">0</strong>
+<span>MISSES</span>
+</div>
+
+<div class="stat">
+<strong id="reaction">--</strong>
+<span>AVG MS</span>
+</div>
+
+</div>
+
+<div class="tip" id="practiceTip">
+    Complete a few rounds to see your reaction score.
+</div>
+
+</div>
+
+
+<div class="card challenge">
+
+<h3>🔥 DAILY CHALLENGE</h3>
+
+<p id="challengeText">
+Complete 10 target hits in calibration.
+</p>
+
+<div class="reward">
+🏆 Reward: +50 XP
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= PROFILE ================= -->
+
+<section id="profile" class="page">
+
+<div class="card">
+
+<h2>🏆 PLAYER PROGRESS</h2>
+
+<div class="levelBox">
+
+<div class="levelRow">
+    <div class="level">
+        LV.<span id="level">1</span>
+    </div>
+
+    <div class="xpText">
+        <span id="xp">0</span> / 100 XP
+    </div>
+</div>
+
+<div class="xpBar">
+    <div class="xpFill" id="xpFill"></div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>💾 SAVED PROFILES</h2>
+
+<div id="profiles">
+    <div style="color:var(--muted);font-size:13px;">
+        No saved profiles yet.
+    </div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📊 YOUR STATS</h2>
+
+<div class="calStats">
+
+<div class="stat">
+<strong id="totalGenerations">0</strong>
+<span>GENERATED</span>
+</div>
+
+<div class="stat">
+<strong id="totalCalibrations">0</strong>
+<span>CALIBRATIONS</span>
+</div>
+
+<div class="stat">
+<strong id="bestReaction">--</strong>
+<span>BEST MS</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+    <strong>AR GAMING</strong>
+    <span> SENSI LAB V2 • PLAN • TUNE • PRACTICE</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================
+   AR GAMING SENSI LAB V2
+========================================= */
+
+let current = {
+    general:175,
+    redDot:170,
+    scope2:155,
+    scope4:140,
+    sniper:79,
+    freeLook:185
+};
+
+let selectedIssue = null;
+let suggested = null;
+
+let state = JSON.parse(
+    localStorage.getItem("arSensiV2")
+) || {
+    xp:0,
+    level:1,
+    generations:0,
+    calibrations:0,
+    bestReaction:null,
+    profiles:[]
+};
+
+
+/* ---------- SAVE STATE ---------- */
+
+function saveState(){
+    localStorage.setItem(
+        "arSensiV2",
+        JSON.stringify(state)
+    );
+
+    updateProgress();
+}
+
+
+/* ---------- TOAST ---------- */
+
+function toast(message){
+
+    const t = document.getElementById("toast");
+
+    t.textContent = message;
+    t.classList.add("show");
+
+    setTimeout(()=>{
+        t.classList.remove("show");
+    },1800);
+}
+
+
+/* ---------- TABS ---------- */
+
+function showPage(id,button){
+
+    document.querySelectorAll(".page")
+        .forEach(p=>p.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    document.querySelectorAll(".tab")
+        .forEach(t=>t.classList.remove("active"));
+
+    button.classList.add("active");
+
+    if(id==="profile"){
+        renderProfiles();
+    }
+}
+
+
+/* ---------- GENERATOR ---------- */
+
+function generateSensi(){
+
+    const device =
+        document.getElementById("device").value;
+
+    const style =
+        document.getElementById("style").value;
+
+    const dpi =
+        Number(document.getElementById("dpi").value);
+
+    const refresh =
+        Number(document.getElementById("refresh").value);
+
+    let base = 170;
+
+
+    if(device==="low") base -= 12;
+    if(device==="high") base += 8;
+
+    if(dpi<350) base += 7;
+    if(dpi>500) base -= 7;
+
+    if(refresh>=120) base += 5;
+    if(refresh<=60) base -= 5;
+
+    if(style==="drag") base += 12;
+    if(style==="precise") base -= 8;
+    if(style==="rush") base += 7;
+
+    base=Math.max(100,Math.min(200,base));
+
+
+    current={
+        general:base,
+        redDot:Math.max(80,base-5),
+        scope2:Math.max(70,base-20),
+        scope4:Math.max(60,base-35),
+        sniper:Math.max(40,Math.min(100,Math.round(base*.45))),
+        freeLook:Math.min(200,base+10)
+    };
+
+
+    displaySettings();
+
+
+    let score=75;
+
+    if(device==="high") score+=5;
+    if(refresh>=120) score+=5;
+    if(dpi>=350 && dpi<=500) score+=5;
+    if(style==="balanced") score+=3;
+
+    score=Math.min(score,98);
+
+
+    let name="BALANCED PROFILE";
+
+    if(style==="drag") name="DRAG HEADSHOT";
+    if(style==="precise") name="PRECISION AIM";
+    if(style==="rush") name="RUSH AIM";
+
+
+    document.getElementById("profileName")
+        .textContent=name;
+
+    document.getElementById("score")
+        .textContent=score;
+
+
+    document.getElementById("generatorTip")
+        .textContent=
+        "This is a personalized starting point. Test it and use Sensi Tuner to make smaller adjustments based on your actual aim.";
+
+
+    state.generations++;
+    addXP(10);
+    saveState();
+
+    updateTunerSettings();
+
+    toast("⚡ New sensi generated!");
+}
+
+
+function displaySettings(){
+
+    document.getElementById("general")
+        .textContent=current.general;
+
+    document.getElementById("redDot")
+        .textContent=current.redDot;
+
+    document.getElementById("scope2")
+        .textContent=current.scope2;
+
+    document.getElementById("scope4")
+        .textContent=current.scope4;
+
+    document.getElementById("sniper")
+        .textContent=current.sniper;
+
+    document.getElementById("freeLook")
+        .textContent=current.freeLook;
+
+    updateTunerSettings();
+}
+
+
+/* ---------- COPY ---------- */
+
+function copySettings(){
+
+    const text=
+`AR GAMING — SENSI LAB V2
+
+General: ${current.general}
+Red Dot: ${current.redDot}
+2X Scope: ${current.scope2}
+4X Scope: ${current.scope4}
+Sniper: ${current.sniper}
+Free Look: ${current.freeLook}`;
+
+    navigator.clipboard.writeText(text)
+    .then(()=>toast("📋 Settings copied!"));
+}
+
+
+/* ---------- SAVE PROFILE ---------- */
+
+function saveProfile(){
+
+    const name=
+        prompt(
+            "Enter a name for this profile:",
+            "My Sensi"
+        );
+
+    if(!name) return;
+
+    state.profiles.push({
+        id:Date.now(),
+        name:name,
+        settings:{...current},
+        date:new Date().toLocaleDateString()
+    });
+
+    saveState();
+
+    toast("💾 Profile saved!");
+}
+
+
+/* ---------- PROFILES ---------- */
+
+function renderProfiles(){
+
+    const box=
+        document.getElementById("profiles");
+
+    if(state.profiles.length===0){
+
+        box.innerHTML=
+        `<div style="color:var(--muted);font-size:13px">
+        No saved profiles yet.
+        </div>`;
+
+        return;
+    }
+
+
+    box.innerHTML="";
+
+    state.profiles
+        .slice()
+        .reverse()
+        .forEach(p=>{
+
+        const div=
+        document.createElement("div");
+
+        div.className="profile";
+
+        div.innerHTML=`
+            <div class="profileInfo">
+                <b>${escapeHTML(p.name)}</b>
+                <small>
+                    General ${p.settings.general}
+                    • ${p.date}
+                </small>
+            </div>
+
+            <div class="profileActions">
+                <button onclick="loadProfile(${p.id})">
+                    LOAD
+                </button>
+
+                <button onclick="deleteProfile(${p.id})">
+                    ×
+                </button>
+            </div>
+        `;
+
+        box.appendChild(div);
+    });
+}
+
+
+function loadProfile(id){
+
+    const p=
+        state.profiles.find(x=>x.id===id);
+
+    if(!p) return;
+
+    current={...p.settings};
+
+    displaySettings();
+
+    toast("🎯 Profile loaded!");
+}
+
+
+function deleteProfile(id){
+
+    state.profiles=
+        state.profiles.filter(x=>x.id!==id);
+
+    saveState();
+    renderProfiles();
+
+    toast("Profile deleted");
+}
+
+
+function escapeHTML(str){
+
+    return String(str)
+        .replace(/[&<>"']/g,m=>({
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+        }[m]));
+}
+
+
+/* ---------- TUNER ---------- */
+
+function updateTunerSettings(){
+
+    document.getElementById("tGeneral")
+        .textContent=current.general;
+
+    document.getElementById("tRed")
+        .textContent=current.redDot;
+
+    document.getElementById("t2")
+        .textContent=current.scope2;
+
+    document.getElementById("t4")
+        .textContent=current.scope4;
+}
+
+
+function selectIssue(button,type){
+
+    document.querySelectorAll(".issue")
+        .forEach(x=>x.classList.remove("selected"));
+
+    button.classList.add("selected");
+
+    selectedIssue=type;
+
+    suggested=null;
+
+    document.getElementById("tunerResult")
+        .textContent=
+        "Issue selected. Tap ANALYZE AIM.";
+}
+
+
+function tuneSensi(){
+
+    if(!selectedIssue){
+
+        toast("Select an aim problem first");
+        return;
+    }
+
+
+    suggested={...current};
+
+
+    if(selectedIssue==="high"){
+
+        suggested.general-=5;
+        suggested.redDot-=5;
+
+        document.getElementById("tunerResult")
+            .textContent=
+            "Your aim is going too high. Try reducing General and Red Dot by 5 points.";
+    }
+
+
+    if(selectedIssue==="low"){
+
+        suggested.general+=5;
+        suggested.redDot+=5;
+
+        document.getElementById("tunerResult")
+            .textContent=
+            "Your aim is not reaching the target. Try increasing General and Red Dot by 5 points.";
+    }
+
+
+    if(selectedIssue==="fast"){
+
+        suggested.general-=4;
+        suggested.redDot-=4;
+        suggested.scope2-=3;
+
+        document.getElementById("tunerResult")
+            .textContent=
+            "Your aim feels too fast. Lower the main sensitivities slightly for more control.";
+    }
+
+
+    if(selectedIssue==="slow"){
+
+        suggested.general+=4;
+        suggested.redDot+=4;
+        suggested.scope2+=3;
+
+        document.getElementById("tunerResult")
+            .textContent=
+            "Your aim feels slow. Increase the main sensitivities slightly and test again.";
+    }
+
+
+    suggested.general=
+        Math.max(1,Math.min(200,suggested.general));
+
+    suggested.redDot=
+        Math.max(1,Math.min(200,suggested.redDot));
+
+    suggested.scope2=
+        Math.max(1,Math.min(200,suggested.scope2));
+
+    suggested.scope4=
+        Math.max(1,Math.min(200,suggested.scope4));
+
+
+    document.getElementById("tGeneral")
+        .textContent=suggested.general;
+
+    document.getElementById("tRed")
+        .textContent=suggested.redDot;
+
+    document.getElementById("t2")
+        .textContent=suggested.scope2;
+
+    document.getElementById("t4")
+        .textContent=suggested.scope4;
+
+    addXP(5);
+}
+
+
+function applyTune(){
+
+    if(!suggested){
+
+        toast("Analyze your aim first");
+        return;
+    }
+
+    current={...current,...suggested};
+
+    displaySettings();
+
+    toast("⚡ Tuned settings applied!");
+}
+
+
+/* ---------- AIM PRACTICE ---------- */
+
+let practiceRunning=false;
+let hits=0;
+let misses=0;
+let totalReaction=0;
+let reactionCount=0;
+let targetTime=0;
+let rounds=0;
+
+
+function startPractice(){
+
+    if(practiceRunning) return;
+
+    practiceRunning=true;
+    hits=0;
+    misses=0;
+    totalReaction=0;
+    reactionCount=0;
+    rounds=0;
+
+    updatePractice();
+
+    document.getElementById("practiceBtn")
+        .textContent="🎯 CALIBRATION RUNNING";
+
+    spawnTarget();
+}
+
+
+function spawnTarget(){
+
+    if(!practiceRunning) return;
+
+    if(rounds>=10){
+
+        finishPractice();
+        return;
+    }
+
+
+    const area=
+        document.getElementById("targetArea");
+
+    const target=
+        document.getElementById("target");
+
+    const x=
+        40+Math.random()*(area.clientWidth-80);
+
+    const y=
+        40+Math.random()*(area.clientHeight-80);
+
+
+    target.style.left=x+"px";
+    target.style.top=y+"px";
+    target.style.display="block";
+
+    targetTime=performance.now();
+}
+
+
+function hitTarget(){
+
+    if(!practiceRunning) return;
+
+    const reaction=
+        Math.round(
+            performance.now()-targetTime
+        );
+
+    hits++;
+    rounds++;
+
+    totalReaction+=reaction;
+    reactionCount++;
+
+    target.style.display="none";
+
+    updatePractice();
+
+    setTimeout(spawnTarget,150);
+}
+
+
+function updatePractice(){
+
+    document.getElementById("hits")
+        .textContent=hits;
+
+    document.getElementById("misses")
+        .textContent=misses;
+
+    document.getElementById("reaction")
+        .textContent=
+        reactionCount
+        ? Math.round(totalReaction/reactionCount)
+        : "--";
+}
+
+
+function finishPractice(){
+
+    practiceRunning=false;
+
+    document.getElementById("target")
+        .style.display="none";
+
+    document.getElementById("practiceBtn")
+        .textContent="🎯 START CALIBRATION";
+
+    const avg=
+        Math.round(totalReaction/reactionCount);
+
+    state.calibrations++;
+
+    if(
+        !state.bestReaction ||
+        avg<state.bestReaction
+    ){
+        state.bestReaction=avg;
+    }
+
+
+    addXP(25);
+    saveState();
+
+    document.getElementById("practiceTip")
+        .textContent=
+        `Calibration complete! Average reaction: ${avg} ms. Use this as a practice benchmark and tune your sensitivity gradually.`;
+
+    toast("🏆 Calibration complete!");
+}
+
+
+/* ---------- XP ---------- */
+
+function addXP(amount){
+
+    state.xp+=amount;
+
+    while(state.xp>=100){
+
+        state.xp-=100;
+        state.level++;
+
+        toast(
+            "🏆 LEVEL UP! Level "+state.level
+        );
+    }
+
+    saveState();
+}
+
+
+function updateProgress(){
+
+    document.getElementById("level")
+        .textContent=state.level;
+
+    document.getElementById("xp")
+        .textContent=state.xp;
+
+    document.getElementById("xpFill")
+        .style.width=
+        state.xp+"%";
+
+
+    document.getElementById("totalGenerations")
+        .textContent=state.generations;
+
+    document.getElementById("totalCalibrations")
+        .textContent=state.calibrations;
+
+    document.getElementById("bestReaction")
+        .textContent=
+        state.bestReaction
+        ? state.bestReaction
+        : "--";
+}
+
+
+/* ---------- STARTUP ---------- */
+
+generateSensi();
+updateProgress();
+renderProfiles();
+
+</script>
+
+</body>
+</html>
